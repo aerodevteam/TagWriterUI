@@ -1,12 +1,6 @@
 project_root/
 │
 ├── app.py                # Main application entry point
-├── translations/         # Directory for translation files
-│   ├── english.qm        # Precompiled English translation file (optional)
-│   ├── hindi.qm          # Precompiled Hindi translation file
-│   ├── english.ts        # English translation source file
-│   ├── hindi.ts          # Hindi translation source file
-│
 ├── screens/              # Directory for screen-specific code
 │   ├── __init__.py       # Makes screens a package
 │   ├── landing_screen.py # Landing Screen implementation
