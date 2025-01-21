@@ -4,43 +4,34 @@ from PyQt5.QtGui import QPixmap
 
 
 class MainScreen(QWidget):
-    def __init__(self, switch_to_complete, switch_to_home, data=None):
+    def __init__(self, switch_to_complete, switch_to_home):
         super().__init__()
         self.switch_to_home = switch_to_home
         self.switch_to_complete = switch_to_complete
-        print("piyush",data)
-        
-        
-        
-                # Extract data from the JSON
-        flight_details = data.get("flightDetails", {}) if data else {}
-        first_name = data.get("firstName", "N/A")
-        last_name = data.get("lastName", "N/A")
-        full_name = f"{first_name} {last_name}"
-        pnr = flight_details.get("pnrNo", "N/A")
-        flight_number = flight_details.get("flightNumber", "N/A")
-        departure_time = flight_details.get("departureTime", "N/A")
-        terminal = flight_details.get("terminal", "N/A")
-        from_location = flight_details.get("from", "N/A")
-        to_location = flight_details.get("to", "N/A")
-        date = flight_details.get("date", "N/A").split("T")[0]  
-        
-        
+
         # Main layout
         main_layout = QVBoxLayout()
-        main_layout.setContentsMargins(10, 10, 10, 10)  # Adjusted margins
-        main_layout.setSpacing(5)  # Reduced spacing between elements
+        main_layout.setContentsMargins(20, 20, 20, 20)
+        main_layout.setSpacing(10)
 
+        # Set Background Color
+        # self.setStyleSheet("background-color: #E0F7FA;")  # Light cyan background
+        
         # Add Background Image
         self.bg_label = QLabel(self)
-        self.bg_label.setPixmap(QPixmap("resources/Group2.png"))
-        self.bg_label.setScaledContents(True)
+        self.bg_label.setPixmap(QPixmap("resources/Group2.png").scaled(
+            self.width(), self.height(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation))
         self.bg_label.setAlignment(Qt.AlignCenter)
         self.bg_label.setStyleSheet("border: none;")
-        self.bg_label.setGeometry(0, 0, self.width(), self.height())  # Ensure full-screen background
+        self.bg_label.setGeometry(0, 0, self.width(), self.height())  # Cover full screen
 
-        # Spacer for image space (slightly reduced height)
-        top_spacer = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        # Overlay Layout
+        overlay_layout = QVBoxLayout()
+        overlay_layout.setContentsMargins(20, 20, 20, 20)
+        overlay_layout.setSpacing(10)
+
+        # Spacer for image space (reduced height)
+        top_spacer = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
         main_layout.addSpacerItem(top_spacer)
 
         # Circle Widget
@@ -63,14 +54,13 @@ class MainScreen(QWidget):
             QWidget {
                 background-color: #FFFFFF; 
                 border-radius: 20px;        
-                padding: 15px;  /* Reduced padding */
+                padding: 20px;
             }
         """)
-        box_widget.setFixedSize(420, 600)  # Adjusted height of the box
+        box_widget.setFixedSize(420, 650)  # Increased height of the box
 
         # Box Content
         box_layout = QVBoxLayout()
-        box_layout.setSpacing(5)  # Reduced spacing between elements inside the box
         box_widget.setLayout(box_layout)
 
         # Add Plane Image
@@ -81,6 +71,10 @@ class MainScreen(QWidget):
         plane_image.setAlignment(Qt.AlignCenter)
         box_layout.addWidget(plane_image)
 
+        # Spacer for additional space below the plane image
+        plane_spacer = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        box_layout.addSpacerItem(plane_spacer)
+
         # Title
         title_label = QLabel("Passenger Information")
         title_label.setAlignment(Qt.AlignCenter)
@@ -89,8 +83,7 @@ class MainScreen(QWidget):
 
         # Flight Info (Date + GUJ -> MUM)
         flight_info_layout = QVBoxLayout()
-        flight_info_layout.setSpacing(3)  # Reduced spacing between rows
-        flight_info_layout.setContentsMargins(0, 5, 0, 5)
+        flight_info_layout.setContentsMargins(0, 5, 0, 5)  # Adjusted spacing above and below
 
         # GUJ -> MUM Layout
         guj_mum_layout = QHBoxLayout()
@@ -100,7 +93,7 @@ class MainScreen(QWidget):
         from_layout = QVBoxLayout()
         from_date = QLabel("<span style='font-size:12px; color:#555555;'>Mon 15 Jul</span>")
         from_date.setAlignment(Qt.AlignCenter)
-        from_location = QLabel(f"<b style='font-size:25px; letter-spacing:3px;'>GUJ</b><br><span style='font-size:12px; color:#888888;'>{from_location}</span>")
+        from_location = QLabel("<b style='font-size:25px; letter-spacing:3px;'>GUJ</b><br><span style='font-size:12px; color:#888888;'>Gujarat</span>")
         from_location.setAlignment(Qt.AlignCenter)
         from_layout.addWidget(from_date)
         from_layout.addWidget(from_location)
@@ -118,7 +111,7 @@ class MainScreen(QWidget):
         to_layout = QVBoxLayout()
         to_date = QLabel("<span style='font-size:12px; color:#555555;'>Mon 15 Jul</span>")
         to_date.setAlignment(Qt.AlignCenter)
-        to_location = QLabel(f"<b style='font-size:25px; letter-spacing:3px;'>MUM</b><br><span style='font-size:12px; color:#888888;'>{to_location}</span>")
+        to_location = QLabel("<b style='font-size:25px; letter-spacing:3px;'>MUM</b><br><span style='font-size:12px; color:#888888;'>Mumbai</span>")
         to_location.setAlignment(Qt.AlignCenter)
         to_layout.addWidget(to_date)
         to_layout.addWidget(to_location)
@@ -128,46 +121,46 @@ class MainScreen(QWidget):
         box_layout.addLayout(flight_info_layout)
 
         # Passenger Name
-        name_label = QLabel(f"<b style='font-size:12px; font-weight:500; color:#555555;'>Passenger Name:</b><br><span style='font-size:16px;font-weight:700; letter-spacing:1px;'>{full_name}</span>")
+        name_label = QLabel("<b style='font-size:12px; font-weight:500; color:#555555;'>Passenger Name:</b><br><span style='font-size:16px;font-weight:700; letter-spacing:1px;'>Anna Berlin</span>")
         name_label.setStyleSheet("font-size:14px;")  # Add space below name
         name_label.setAlignment(Qt.AlignLeft)
         box_layout.addWidget(name_label)
 
-       # Details Grid for Other Info
+        # Details Grid for Other Info
         details_grid = QGridLayout()
         details_grid.setHorizontalSpacing(10)  # Adjust column spacing
         details_grid.setVerticalSpacing(10)    # Add vertical spacing
 
         # Flight No. and Departure Time
-        flight_no = QLabel(f"""
+        flight_no = QLabel("""
         <b style='font-size:12px; font-weight:500; color:#555555;'>Flight No.:</b><br>
-        <span style='font-size:16px; font-weight:700;  margin-top:4px; letter-spacing:1px;'>{flight_number}</span>
+        <span style='font-size:16px; font-weight:700;  margin-top:4px; letter-spacing:1px;'>MI0987</span>
         """)
 
         flight_no.setStyleSheet("font-size:14px;")
         flight_no.setAlignment(Qt.AlignLeft)
         details_grid.addWidget(flight_no, 0, 0)
 
-        departure_time = QLabel(f"""
+        departure_time = QLabel("""
         <b style='font-size:12px; font-weight:500; color:#555555;'>Departure Time:</b><br>
-        <span style='font-size:16px; font-weight:700; letter-spacing:1px;'>{departure_time}</span>
+        <span style='font-size:16px; font-weight:700; letter-spacing:1px;'>9:00 PM</span>
         """)
         departure_time.setStyleSheet("font-size:14px;")
         departure_time.setAlignment(Qt.AlignLeft)
         details_grid.addWidget(departure_time, 0, 1)
 
         # PNR and Boarding Gate
-        pnr_label = QLabel(f"""
+        pnr_label = QLabel("""
         <b style='font-size:12px; font-weight:500; color:#555555;'>PNR:</b><br>
-        <span style='font-size:16px; font-weight:700; letter-spacing:1px;'>{pnr}</span>
+        <span style='font-size:16px; font-weight:700; letter-spacing:1px;'>3645732476</span>
         """)
         pnr_label.setStyleSheet("font-size:14px; ")
         pnr_label.setAlignment(Qt.AlignLeft)
         details_grid.addWidget(pnr_label, 1, 0)
 
-        boarding_gate = QLabel(f"""
+        boarding_gate = QLabel("""
         <b style='font-size:12px; font-weight:500; color:#555555;'>Boarding Gate:</b><br>
-        <span style='font-size:16px; font-weight:700; letter-spacing:1px;'>{terminal}</span>
+        <span style='font-size:16px; font-weight:700; letter-spacing:1px;'>Gate - 3</span>
         """)
         boarding_gate.setStyleSheet("font-size:14px;")
         boarding_gate.setAlignment(Qt.AlignLeft)
@@ -176,10 +169,17 @@ class MainScreen(QWidget):
         # Add details grid to box layout
         box_layout.addLayout(details_grid)
 
+        # Circle and Box Layout
+        circle_box_layout = QVBoxLayout()
+        circle_box_layout.setSpacing(0)
+        circle_box_layout.addWidget(circle_widget, alignment=Qt.AlignHCenter)
+        circle_box_layout.addWidget(box_widget, alignment=Qt.AlignHCenter)
+        circle_box_layout.setContentsMargins(0, -40, 0, 0)  # Adjusted top margin to move content up
+        main_layout.addLayout(circle_box_layout)
 
-        # Add Circle and Box Layout
-        main_layout.addWidget(circle_widget, alignment=Qt.AlignHCenter)
-        main_layout.addWidget(box_widget, alignment=Qt.AlignHCenter)
+        # Spacer for Button Positioning (reduced height)
+        mid_spacer = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        main_layout.addSpacerItem(mid_spacer)
 
         # Yellow Button
         button = QPushButton("Activate Tag")
@@ -192,17 +192,17 @@ class MainScreen(QWidget):
                 padding: 12px;
                 border-radius: 10px;
             }
+            QPushButton:hover {
+                background-color: #FFC107;
+            }
         """)
         button.setFixedSize(300, 80)
-        button.clicked.connect(switch_to_complete)
+        button.clicked.connect(self.switch_to_complete)
+
         main_layout.addWidget(button, alignment=Qt.AlignBottom | Qt.AlignHCenter)
 
+        # Set Layout
         self.setLayout(main_layout)
-
-    def resizeEvent(self, event):
-        """Ensure the background image scales dynamically on resize."""
-        self.bg_label.setGeometry(0, 0, self.width(), self.height())
-
 
 
 
