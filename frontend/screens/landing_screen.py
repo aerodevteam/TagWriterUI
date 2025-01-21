@@ -9,9 +9,9 @@ class LandingScreen(QWidget):
 
         layout = QVBoxLayout()
 
-        self.label = QLabel("Aerofoyl Technologies")
-        self.label.setStyleSheet("font-size: 24px; color: purple;")
-        layout.addWidget(self.label)
+        # self.label = QLabel("Aerofoyl Technologies")
+        # self.label.setStyleSheet("font-size: 24px; color: purple;")
+        # layout.addWidget(self.label)
 
         self.insert_tag_button = QPushButton("Insert TAG")
         self.insert_tag_button.clicked.connect(switch_to_main)
@@ -29,7 +29,7 @@ class LandingScreen(QWidget):
         self.change_language_callback(selected_language)
 
     def retranslate_ui(self, translator, target_language):
-        self.label.setText(translator.translate("Aerofoyl Technologies", dest=target_language).text)
+        # self.label.setText(translator.translate("Aerofoyl Technologies", dest=target_language).text)
         self.insert_tag_button.setText(translator.translate("Insert TAG", dest=target_language).text)
         self.language_selector.setItemText(0, translator.translate("English", dest=target_language).text)
         self.language_selector.setItemText(1, translator.translate("Hindi", dest=target_language).text)
