@@ -3,10 +3,10 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QComboBox
 
 
 class LandingScreen(QWidget):
-    def __init__(self, switch_to_main, change_language):
+    def __init__(self, switch_to_main):
         super().__init__()
         self.switch_to_main = switch_to_main
-        self.change_language_callback = change_language
+
 
         layout = QVBoxLayout()
 
